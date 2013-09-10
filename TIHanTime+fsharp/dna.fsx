@@ -1,4 +1,4 @@
-let dnaCount s = [for ch in "ACGT" -> string << Seq.length <| Seq.filter (fun x -> x = ch) s] |> String.concat " "
+let dnaCount s = [for ch in "ACGT" -> string << Seq.length <| Seq.filter ((=) ch) s] |> String.concat " "
 dnaCount "AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATAGCAGC" |> printfn "%s"
 
 // Test
