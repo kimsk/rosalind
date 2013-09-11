@@ -5,7 +5,7 @@ NashFP's Rosalind playground. [Rosalind](http://rosalind.info) is a *project-eul
 
 > "Make sure you register: allows downloading test data 
 > sets & tracking your progress. Addictive" 
->     -- [Jon Dailey](https://twitter.com/macintux)
+>     -- [John Daily](https://twitter.com/macintux/status/377119243789422592)
 
 Pick your favorite problems from here: http://rosalind.info/problems/list-view/ and solve them using your functional language of choice. Contribute your solution by adding a **folder** named {your twitter handle}+{your language} such as: 
 ````
