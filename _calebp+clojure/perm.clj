@@ -1,22 +1,15 @@
-(defn generate-for-bindings [n]
-  (let [rng (range 1 (inc n))
-        symbols (map #(symbol (str "x" %)) rng)
-        pairs (loop [x (first symbols)
-                      prior #{}
-                      more (rest symbols)
-                      result []]
-                 (if-not x
-                   result
-                   (recur (first more)
-                          (conj prior x)
-                          (rest more)
-                          (conj result [x prior]))))]
-    (mapcat (fn [[x priors]]
-              `[~x (remove ~priors ~(vec rng))]) pairs)))
-
 (defn symbols [n]
-  (map #(symbol (str "x" %))
-       (range 1 (inc n))))
+  (mapv #(symbol (str "x" %))
+        (range 1 (inc n))))
+
+(defn generate-for-bindings [n]
+  (let [symbols (symbols n)
+        numbers (range 1 (inc n))
+        pairs (for [i (range n)]
+                [(nth symbols i)
+                 (set (subvec symbols 0 i))])]
+    (mapcat (fn [[x priors]]
+              `[~x (remove ~priors ~(vec numbers))]) pairs)))
 
 ;; First thing that came to mind for generating combinations was a for
 ;; loop.  Then I had to figure out if I could dynamically generate a
@@ -28,9 +21,10 @@
   `(for ~(vec (generate-for-bindings n))
      ~(vec (symbols n))))
 
-(let [ps (perms 4)]
-  (println (count ps))
-  (doseq [p ps]
-    (println (clojure.string/join " " p))))
+(comment
+  (let [ps (perms 3)]
+    (println (count ps))
+    (doseq [p ps]
+      (println (clojure.string/join " " p)))))
 
 
