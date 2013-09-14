@@ -1,3 +1,4 @@
+(ns rosalind.perm)
 
 ;; First thing that came to mind for generating combinations was a for
 ;; loop.  Then I had to figure out if I could dynamically generate a
