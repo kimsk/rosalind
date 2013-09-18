@@ -7,6 +7,23 @@ import qualified Data.Map as Map
 import Roselib.FASTA
 import Debug.Trace
 
+-- This solution builds tree of continuous substrings. Each node in the tree
+-- has a flag to indicate whether the node has been visited, and a map whose keys
+-- are the characters that can follow after the substring at this point in the tree
+-- and whose values are subtrees.
+--
+-- We create the initial tree using the continuousSubstrings function and add each substring
+-- to the tree. Then, for each successive DNA string, we only need to add the tails for
+-- each string, because it will only add each tail as long as it matches what is already
+-- in the tree.
+--
+-- After adding the tails of a DNA string, we prune the tree by removing all nodes that
+-- were not visited while adding the DNA tails. This removes any parts of the tree that
+-- aren't common substrings, so after each pruning the tree represents exactly the common
+-- substrings of the DNA strings added so far.
+--
+-- Finally, we just look for the longest substring in the tree
+
 data StringTreeInfo = StringTree { visited :: Bool, children :: (Map.Map Char StringTreeInfo) } deriving (Show)
 
 makeDNATree (StringTree _ nodes) [] = StringTree False nodes
