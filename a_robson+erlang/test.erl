@@ -44,8 +44,8 @@ mutation_count_test() ->
 	?assertMatch( 7, dna:count_mutations( DNA1, DNA2 ) ).
 
 mendels_first_law_test() ->
-	Probability = mendel:probability(2,2,2),
-	?assertMatch( 0.78333, Probability ).
+	Probability = mendel:get_dominant_probability(2,2,2),
+	?assertMatch( 0.7833333333333333, Probability ).
 
 rna_to_protein_test() ->
 	Protein = rna:to_protein("AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA"),
@@ -58,8 +58,8 @@ dna_combing_test() ->
 consensus_profile_test() ->
 	FASTA = ">Rosalind_1\nATCCAGCT\n>Rosalind_2\nGGGCAACT\n>Rosalind_3\nATGGATCT\n>Rosalind_4\nAAGCAACC\n>Rosalind_5\nTTGGAACT\n>Rosalind_6\nATGCCATT\n>Rosalind_7\nATGGCACT",
 	?assertMatch( 
-		"ATGCAACT\nA: 5 1 0 0 5 5 0 0\nC: 0 0 1 4 2 0 6 1\nG: 1 1 6 3 0 1 0 0\nT: 1 5 0 0 0 1 1 6", 
-		fasta:consensus_profile(FASTA)
+		"ATGCAACT\nA: 5 1 0 0 5 5 0 0\nC: 0 0 1 4 2 0 6 1\nG: 1 1 6 3 0 1 0 0\nT: 1 5 0 0 0 1 1 6\n", 
+		consensus:profile(FASTA)
 	).
 
 test() -> eunit:test(test).
