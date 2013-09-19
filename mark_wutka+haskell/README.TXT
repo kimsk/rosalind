@@ -5,3 +5,7 @@ problems.
 
 When compiling a solution, add -i.. to the ghc command to allow it to find
 the Roselib module.
+
+My Haskell code seems to end up looking like lisp, with what I perceive
+as too many parens. I would welcome suggestions on how to make it look
+better and ways to improve the code.
