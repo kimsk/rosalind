@@ -1,5 +1,5 @@
 module Roselib.RNA
-( rnaToProtein )
+( rnaToProteins )
 where
 
 import Data.List
@@ -31,7 +31,10 @@ rnaTranslater (revAllAccum, revCurrAccum, xlating) codon =
     in
         if (xlating) then
             if xlated == "Stop" then
-                ((reverse revCurrAccum) : revAllAccum, [], False)
+                if not $ null revCurrAccum then
+                    ((reverse revCurrAccum) : revAllAccum, [], False)
+                else
+                    (revAllAccum, [], False)
             else
                 (revAllAccum, (head xlated) : revCurrAccum, True)
         else
@@ -40,7 +43,7 @@ rnaTranslater (revAllAccum, revCurrAccum, xlating) codon =
             else
                 (revAllAccum, [], False)
 
-rnaToProtein :: String -> String
-rnaToProtein rna = 
+rnaToProteins :: String -> [String]
+rnaToProteins rna = 
     let (revAccum, _, _) = foldl' rnaTranslater ([], [], False) (filter (\s -> length s == 3) (chunksOf 3 rna)) in
-        concat $ reverse revAccum
+        reverse revAccum
