@@ -7,4 +7,4 @@ import Data.List
 main = do
   argv <- getArgs
   fileLines <- readFile (head argv)
-  printf "%s\n" (rnaToProtein fileLines)
+  printf "%s\n" (head $ rnaToProteins fileLines)
