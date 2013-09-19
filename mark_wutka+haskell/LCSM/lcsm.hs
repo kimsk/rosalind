@@ -26,17 +26,20 @@ import Debug.Trace
 
 data StringTreeInfo = StringTree { visited :: Bool, children :: (Map.Map Char StringTreeInfo) } deriving (Show)
 
+empty :: StringTreeInfo
+empty = StringTree False Map.empty
+
 makeDNATree (StringTree _ nodes) [] = StringTree False nodes
 makeDNATree (StringTree _ nodes) (c:cs) =
     if Map.member c nodes  then
-        StringTree False (Map.insert c (makeDNATree (Map.findWithDefault (StringTree False Map.empty) c nodes) cs) nodes)
+        StringTree False (Map.insert c (makeDNATree (Map.findWithDefault empty c nodes) cs) nodes)
     else
-        StringTree False (Map.insert c (makeDNATree (StringTree False Map.empty) cs) nodes)
+        StringTree False (Map.insert c (makeDNATree empty cs) nodes)
 
 overlayString tree [] = tree
 overlayString (StringTree _ nodes) (c:cs) =
     if Map.member c nodes then
-        StringTree True (Map.insert c (overlayString (Map.findWithDefault (StringTree False Map.empty) c nodes) cs) nodes)
+        StringTree True (Map.insert c (overlayString (Map.findWithDefault empty c nodes) cs) nodes)
     else
         StringTree True nodes
 
