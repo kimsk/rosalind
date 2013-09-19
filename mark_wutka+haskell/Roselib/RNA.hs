@@ -4,9 +4,9 @@ where
 
 import Data.List
 import Data.List.Split
-import Data.Map
+import qualified Data.Map as Map
 
-rnaToProteinMap = fromList [
+rnaToProteinMap = Map.fromList [
     ("UUU","F"),      ("CUU","L"),      ("AUU","I"),      ("GUU","V"),
     ("UUC","F"),      ("CUC","L"),      ("AUC","I"),      ("GUC","V"),
     ("UUA","L"),      ("CUA","L"),      ("AUA","I"),      ("GUA","V"),
@@ -24,23 +24,23 @@ rnaToProteinMap = fromList [
     ("UGA","Stop"),   ("CGA","R"),      ("AGA","R"),      ("GGA","G"),
     ("UGG","W"),      ("CGG","R"),      ("AGG","R"),      ("GGG","G") ]
 
-rnaTranslater :: (String,Bool) -> String -> (String,Bool)
-rnaTranslater (revAccum, xlating) codon =
+rnaTranslater :: ([String],String,Bool) -> String -> ([String],String,Bool)
+rnaTranslater (revAllAccum, revCurrAccum, xlating) codon =
     let
-        xlated = findWithDefault "Stop" codon rnaToProteinMap
+        xlated = Map.findWithDefault "Stop" codon rnaToProteinMap
     in
         if (xlating) then
             if xlated == "Stop" then
-                (revAccum, False)
+                ((reverse revCurrAccum) : revAllAccum, [], False)
             else
-                ((head xlated) : revAccum, True)
+                (revAllAccum, (head xlated) : revCurrAccum, True)
         else
             if (xlated == "M") then
-                ('M':revAccum, True)
+                (revAllAccum, ['M'], True)
             else
-                (revAccum, False)
+                (revAllAccum, [], False)
 
 rnaToProtein :: String -> String
 rnaToProtein rna = 
-    let (revAccum, _) = Data.List.foldl' rnaTranslater ("", False) (chunksOf 3 rna) in
-        reverse revAccum
+    let (revAccum, _, _) = foldl' rnaTranslater ([], [], False) (filter (\s -> length s == 3) (chunksOf 3 rna)) in
+        concat $ reverse revAccum
