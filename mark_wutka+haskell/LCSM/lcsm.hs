@@ -63,6 +63,6 @@ main = do
   argv <- getArgs
   fileLines <- readFile (head argv)
   let dataset = parseFASTA (lines fileLines)
-  let initialTree = foldl' makeDNATree (StringTree False Map.empty) (continuousSubsequences . dna . head $ dataset)
+  let initialTree = foldl' makeDNATree (StringTree False Map.empty) (tails . dna . head $ dataset)
   let commonSubstrings = foldl' overlayDNA initialTree (map dna (tail dataset))
   putStrLn (longestSubstring (getSubstrings commonSubstrings))
