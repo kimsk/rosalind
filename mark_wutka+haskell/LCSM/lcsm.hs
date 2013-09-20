@@ -31,10 +31,7 @@ empty = StringTree False Map.empty
 
 makeDNATree (StringTree _ nodes) [] = StringTree False nodes
 makeDNATree (StringTree _ nodes) (c:cs) =
-    if Map.member c nodes  then
-        StringTree False (Map.insert c (makeDNATree (Map.findWithDefault empty c nodes) cs) nodes)
-    else
-        StringTree False (Map.insert c (makeDNATree empty cs) nodes)
+    StringTree False (Map.insert c (makeDNATree (Map.findWithDefault empty c nodes) cs) nodes)
 
 overlayString tree [] = tree
 overlayString (StringTree _ nodes) (c:cs) =
