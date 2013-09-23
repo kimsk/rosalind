@@ -3,12 +3,12 @@ module Roselib.DNA
 where
 
 import Data.List
-import Data.Map
+import qualified Data.Map as Map
 
-complementMap = fromList [ ('A','T'), ('C','G'), ('G','C'), ('T','A') ]
+complementMap = Map.fromList [ ('A','T'), ('C','G'), ('G','C'), ('T','A') ]
 
 complement :: String -> String
-complement dna = Data.List.map ((!) complementMap) dna
+complement dna = map ((Map.!) complementMap) dna
 
 reverseComplement :: String -> String
 reverseComplement = reverse . complement

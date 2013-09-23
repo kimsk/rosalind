@@ -15,16 +15,16 @@ continuousSubsequences = filter (not . null) . concatMap inits . tails
 
 mergeSubsequences :: Set.Set String -> String -> Set.Set String
 mergeSubsequences common d =
-    Set.fromList (filter (\s -> Set.member s common) (continuousSubsequences d))
+    Set.fromList . filter (\s -> Set.member s common) $ continuousSubsequences d
 
 makeSubstringSet :: String -> Set.Set String
 makeSubstringSet d = Set.fromList (continuousSubsequences d)
 
 longestSubstring dataset =
-    maximumBy compareLengths (Set.toList (commonSubsequences dataset))
+    maximumBy compareLengths $ Set.toList (commonSubsequences dataset)
         where
             compareLengths a b = compare (length a) (length b)
-            commonSubsequences dataset = foldl mergeSubsequences (makeSubstringSet (dna (head dataset))) (map dna (tail dataset))
+            commonSubsequences dataset = foldl' mergeSubsequences (makeSubstringSet . dna $ head dataset) $ map dna (tail dataset)
 
 main = do
   argv <- getArgs
